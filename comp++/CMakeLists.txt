@@ -3,7 +3,15 @@
 #
 
 # Add source to this project's executable.
-add_executable (comp++ "main.cpp"  "linked_list.h" "skip_list.h" "queue.h" "binary_tree.h" "stack.h")
+add_executable (comp++ "main.cpp")
+
+FILE(GLOB_RECURSE SRC_LIST "${PROJECT_SOURCE_DIR}" "*.h")
+include(CMakePrintHelpers)
+cmake_print_variables(SRC_LIST)
+foreach(src "${SRC_LIST}")
+    cmake_print_variables(subdir)
+	target_sources(comp++ PUBLIC "${src}")
+endforeach()
 
 target_include_directories(comp++ PUBLIC
 	"${PROJECT_SOURCE_DIR}/comp++/"

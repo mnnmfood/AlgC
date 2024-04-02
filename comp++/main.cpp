@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include <random>
-#include "linked_list.h"
-#include "queue.h"
+#include "linked_list/linked_list.h"
+#include "stacks_queues/queue.h"
 
 inline std::random_device rd{};
 inline std::mt19937 gen{rd()};

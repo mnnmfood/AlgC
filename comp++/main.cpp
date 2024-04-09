@@ -2,6 +2,8 @@
 #include <random>
 #include "linked_list/linked_list.h"
 #include "stacks_queues/queue.h"
+#include "trees/binary_tree.h"
+#include "trees/red_black_tree.h"
 
 inline std::random_device rd{};
 inline std::mt19937 gen{rd()};
@@ -47,9 +49,33 @@ void testLinkedList() {
 	std::cout << "\n";
 }
 
+void testBSTree() {
+	int val = 0;
+	BSTree<int> tree;
+	tree.insert(val);
+	std::cout << "Node 0: ";
+	tree.inorder(tree.root);
+	std::cout << "\n";
+	val = 3;
+	tree.insert(val);
+	val = 5;
+	tree.insert(val);
+	val = 1;
+	tree.insert(val);
+	std::cout << "Nodes 0, 1, 3, 5: ";
+	tree.inorder(tree.root);
+	std::cout << "\n";
+	BSTree<int>::node* p; 
+	val = 3;
+	p = tree.recursive_search(tree.root, val);
+	std::cout << "Predecessor of node 3: " << tree.predecessor(p)->key << "\n";
+	std::cout << "Successor of node 3: " << tree.successor(p)->key << "\n";
+}
+
 
 int main()
 {
 	testLinkedList();
 	testQueue();
+	testBSTree();
 }

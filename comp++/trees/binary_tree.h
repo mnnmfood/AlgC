@@ -115,11 +115,11 @@ public:
 	}
 	// --- Deletion O(h)
 	// node deletion is harder. It has 3 cases:
-	//	1-p has no children: just set parent left/right no nill 
+	//	1-p has no children: just set parent left/right to nill 
 	//	2-p has 1 child: replace p with p's child
 	//	3-p has 2 children: find succesor of p (must be in its right subtree):
 	//		s=successor, r=right, l=left, x=s->right
-	//		3.1 s==r: replace p by s and set l = s.l
+	//		3.1 s==r: replace p by s and set l = s->l
 	//		3.2 s!=r: replace s by x and p by s
 	//  Helper function to replace node u with v
 	void transplant(node* u, node* v) {
@@ -133,7 +133,7 @@ public:
 		if (p->left == 0) { transplant(p, p->right); }
 		else if (p->right == 0) { transplant(p, p->left); }
 		else {
-			node* s = min(p.right);
+			node* s = min(p->right);
 			if (s != p->right) {
 				// 3.2
 				transplant(s, s->right);

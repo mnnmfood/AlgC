@@ -17,6 +17,7 @@ void fill(T* arr, int len) {
 }
 
 void testQueue() {
+	std::cout << "--- QUEUE\n";
 	Queue<int, 3> q;
 	q.enqueue(2);
 	q.enqueue(3);
@@ -29,6 +30,7 @@ void testQueue() {
 }
 
 void testLinkedList() {
+	std::cout << "--- Linked List\n";
 	SLList<int> l;
 	l.addToHead(10);
 	l.addToHead(2);
@@ -50,6 +52,7 @@ void testLinkedList() {
 }
 
 void testBSTree() {
+	std::cout << "--- Binary Tree\n";
 	int val = 0;
 	BSTree<int> tree;
 	tree.insert(val);
@@ -72,10 +75,35 @@ void testBSTree() {
 	std::cout << "Successor of node 3: " << tree.successor(p)->key << "\n";
 }
 
+void testRBTree() {
+	std::cout << "--- Red-Black Tree\n";
+	int val = 0;
+	RBTree<int> tree;
+	tree.insert(val);
+	std::cout << "Node 0: ";
+	tree.inorder(tree.root);
+	std::cout << "\n";
+	val = 3;
+	tree.insert(val);
+	val = 5;
+	tree.insert(val);
+	val = 1;
+	tree.insert(val);
+	std::cout << "Nodes 0, 1, 3, 5: ";
+	tree.inorder(tree.root);
+	std::cout << "\n";
+	RBTree<int>::node* p; 
+	val = 3;
+	p = tree.recursive_search(tree.root, val);
+	std::cout << "Predecessor of node 3: " << tree.predecessor(p)->key << "\n";
+	std::cout << "Successor of node 3: " << tree.successor(p)->key << "\n";
+}
+
 
 int main()
 {
 	testLinkedList();
 	testQueue();
 	testBSTree();
+	testRBTree();
 }

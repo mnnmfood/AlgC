@@ -4,6 +4,7 @@
 #include "stacks_queues/queue.h"
 #include "trees/binary_tree.h"
 #include "trees/red_black_tree.h"
+#include "hash_table/hash_table.h"
 
 inline std::random_device rd{};
 inline std::mt19937 gen{rd()};
@@ -93,17 +94,32 @@ void testRBTree() {
 	tree.inorder(tree.root);
 	std::cout << "\n";
 	RBTree<int>::node* p; 
-	val = 3;
+	val = 0;
 	p = tree.recursive_search(tree.root, val);
-	std::cout << "Predecessor of node 3: " << tree.predecessor(p)->key << "\n";
-	std::cout << "Successor of node 3: " << tree.successor(p)->key << "\n";
+	std::cout << "Predecessor of node 0: " << tree.predecessor(p)->key << "\n";
+	std::cout << "Successor of node 0: " << tree.successor(p)->key << "\n";
+	tree.tdelete(p);
+	std::cout << "Deleted node 3: ";
+	tree.inorder(tree.root);
+	std::cout << "\n";
 }
 
+void testHashTable() {
+	std::cout << "--- Hash Table \n";
+	HashTable<int> dict;
+	dict.insert("uno", 1);
+	dict.insert("dos", 1);
+	dict.insert("tres", 1);
+	dict.insert("cuat", 1);
+	dict.insert("cinc", 1);
+	std::cout << "Element with key 'cuatro': " << dict["cuatro"] << "\n";
+}
 
 int main()
 {
 	testLinkedList();
 	testQueue();
+	testHashTable();
 	testBSTree();
 	testRBTree();
 }

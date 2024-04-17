@@ -108,10 +108,11 @@ public:
 					}
 					z->parent->color = BLACK;
 					z->parent->parent->color = RED;
-					left_rotate(z);
+					left_rotate(z->parent->parent);
 				}
 			}
 		}
+		root->color = BLACK;
 	}
 	// --- Deletion O(logn)
 	// Very similar to deletion in ordinary binary tree. 2 differences:
@@ -131,11 +132,11 @@ public:
 		int color_orig = z->color;
 		node* x = 0;
 		node* y = z;
-		if (z->left == 0) { 
+		if (z->left == nil) { 
 			x = z->right;
 			transplant(z, z->right); 
 		}
-		else if (z->right == 0) { 
+		else if (z->right == nil) { 
 			x = z->left;
 			transplant(z, z->left); 
 		}
@@ -219,13 +220,13 @@ public:
 
 	// --- Minimum and maximum	O(h)
 	node* min(node* p) {
-		while (p->left != 0) {
+		while (p->left != nil) {
 			p = p->left;
 		}
 		return p;
 	}
 	node* max(node* p) {
-		while (p->right != 0) {
+		while (p->right != nil) {
 			p = p->right;
 		}
 		return p;
@@ -236,7 +237,7 @@ public:
 	// Successor: the node with the smallest key greater than p	
 	// Predecessor: the node with the highest key smaller than p
 	node* successor(node* p) {
-		if (p->right != 0) {
+		if (p->right != nil) {
 			return min(p->right);
 		}
 		node* temp = p->parent;
@@ -247,11 +248,11 @@ public:
 		return temp;
 	}
 	node* predecessor(node* p) {
-		if (p->left != 0) {
+		if (p->left != nil) {
 			return max(p->left);
 		}
 		node* temp = p->parent;
-		while (temp != 0 && p == temp->left) {
+		while (temp != nil && p == temp->left) {
 			p = temp;
 			temp = p->parent;
 		}
@@ -263,7 +264,7 @@ public:
 	// If the tree is balanced h = lg(n) so 
 	// O(h) == O(logn)
 	node* recursive_search(node* p, T& val) {
-		if (p == 0 || p->key == val) {
+		if (p == nil || p->key == val) {
 			return p;
 		}
 		if (p->key > val) return recursive_search(p->left, val);
@@ -271,7 +272,7 @@ public:
 	}
 	node* iter_search(T& val) {
 		node* p = root;
-		while (p != 0 || p->key != val) {
+		while (p != nil || p->key != val) {
 			if (p->key > val) p = p->left;
 			else p = p->right;
 		}
@@ -280,7 +281,7 @@ public:
 
 	// Inorder: visit all the way left, print, then right. 
 	void inorder(node* p) {
-		if (p != 0) {
+		if (p != nil) {
 			inorder(p->left);
 			// visit node
 			std::cout << p->key << "-";

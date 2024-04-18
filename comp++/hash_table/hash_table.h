@@ -40,10 +40,10 @@ struct elem
 	uint32_t key;
 	T data;
 	int nil;
-	int deleted = 0;
+	int deleted;
 
-	elem() :nil{ 1 } {};
-	elem(uint32_t k, T d) :key{ k }, data{ d }, nil{ 0 } {}
+	elem() :nil{ 1 }, deleted{ 0 } {};
+	elem(uint32_t k, T d) :key{ k }, data{ d }, nil{ 0 }, deleted{ 0 } {}
 };
 
 
@@ -73,20 +73,32 @@ public:
 		if (D.size() == m) { resize(); }
 		for (uint32_t i{ 0 }; i < m; i++) {
 			uint32_t j = linear_hash(key, i);
-			if (D[j].nil) {
+			if (D[j].nil || D[j].deleted) {
 				D[j] = elem(key, data);
 				return j;
 			}
 		}
+	}
 
+	uint32_t del(std::string s) {
+		uint32_t key = encodeString(s);
+		for (uint32_t i{ 0 }; i < m; i++) {
+			uint32_t j = linear_hash(key, i);
+			if (D[j].nil) break;
+			if (D[j].key == key) {
+				D[j].deleted = 1;
+			}
+		}
 	}
 
 	T operator[](std::string s){
 		uint32_t key = encodeString(s);
 		for (uint32_t i{ 0 }; i < m; i++) {
 			uint32_t j = linear_hash(key, i);
-			if (D[j].key == key) {
-				return D[j].data;
+			if (D[j].nil) break;
+			if ((D[j].key == key)){
+				if (D[j].deleted) return  T(-1);
+				else return D[j].data;
 			}
 		}
 		return T(-1);

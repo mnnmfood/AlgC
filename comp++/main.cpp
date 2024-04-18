@@ -108,11 +108,11 @@ void testHashTable() {
 	std::cout << "--- Hash Table \n";
 	HashTable<int> dict;
 	dict.insert("uno", 1);
-	dict.insert("dos", 1);
-	dict.insert("tres", 1);
-	dict.insert("cuat", 1);
-	dict.insert("cinc", 1);
-	std::cout << "Element with key 'cuatro': " << dict["cuatro"] << "\n";
+	dict.insert("dos", 2);
+	dict.insert("tres", 3);
+	dict.insert("cuat", 4);
+	dict.insert("cinc", 5);
+	std::cout << "Element with key 'cuatro': " << dict["cuat"] << "\n";
 }
 
 int main()

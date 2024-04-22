@@ -73,7 +73,7 @@ void testBSTree() {
 	val = 3;
 	p = tree.recursive_search(tree.root, val);
 	std::cout << "Predecessor of node 3: " << tree.predecessor(p)->key << "\n";
-	std::cout << "Successor of node 3: " << tree.successor(p)->key << "\n";
+	std::cout << "Successor of node 3: " << tree.successor(p)->key << "\n\n";
 }
 
 void testRBTree() {
@@ -101,18 +101,19 @@ void testRBTree() {
 	tree.tdelete(p);
 	std::cout << "Deleted node 3: ";
 	tree.inorder(tree.root);
-	std::cout << "\n";
+	std::cout << "\n\n";
 }
 
 void testHashTable() {
 	std::cout << "--- Hash Table \n";
 	HashTable<int> dict;
+	dict.insert("zero", 0);
 	dict.insert("uno", 1);
 	dict.insert("dos", 2);
 	dict.insert("tres", 3);
 	dict.insert("cuat", 4);
 	dict.insert("cinc", 5);
-	std::cout << "Element with key 'cuatro': " << dict["cuat"] << "\n";
+	std::cout << "Element with key 'cuatro': " << dict["cuat"] << "\n\n";
 }
 
 int main()

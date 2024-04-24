@@ -8,11 +8,12 @@
 #define Right(i) ((i << 1) | (0x01)) + 1
 
 template<typename T>
-class Heap
+class MaxHeap
 {
 public:
-	Heap() :size{ 2 } { resize(); }
+	MaxHeap() :size{ 2 } { resize(); }
 	void resize() { size = 2 * size; A.reserve(size); }
+	// Return max-heap property. O(lgn)
 	void max_heapify(int i) {
 		int l = Left(i);
 		int r = Right(i);

@@ -1,36 +1,34 @@
 #ifndef HEAP_H
 #define HEAP_H
 
-// Heaps can be implemented as simple arrays. The nodes are ordered from top to bottom
-// and in each level from left to right, so that:
-// heap[i] > heap[2*i+1]
-// heap[i] > heap[2*i+2]
-//
-// This algo is the key to the heap sort. It restores the heap property if it has been 
-// violated by the root. The root element is moved down the tree until it finds a position
-//
-template<class T>
-void moveDown(T data[], int first, int last) {
-	int largest = 2 * first + 1;
-	while (largest <= last) {
-		if (largest < last && // first has two children (at 2*first+1 and
-			data[largest] < data[largest + 1]) // 2*first+2) and the second
-			largest++; // is larger than the first;
-		if (data[first] < data[largest]) { // if necessary,
-			swap(data[first], data[largest]); // swap child and parent,
-			first = largest; // and move down;
-			largest = 2 * first + 1;
-		}
-		else largest = last + 1; // to exit the loop: the heap property
-	} // isn’t violated by data[first];
-}
+#include <vector>
 
-// Floyd algorith transforms any array into a heap
-template<class T>
-void FloydAgorithm(T data[], int n) {
-	for (int i = n / 2 - 1; i == 0; i--) {
-		moveDown(data, i, n - 1);
+#define Parent(i) (i-1) >> 1
+#define Left(i) (i << 1) | (0x01)
+#define Right(i) ((i << 1) | (0x01)) + 1
+
+template<typename T>
+class Heap
+{
+public:
+	Heap() :size{ 2 } { resize(); }
+	void resize() { size = 2 * size; A.reserve(size); }
+	void max_heapify(int i) {
+		int l = Left(i);
+		int r = Right(i);
+		int largest;
+		if ((l < size) && (A[i] < A[l])) largest = l;
+		else largest = i;
+		if ((r < size) && (A[largest] < A[r])) largest = r;
+		if (largest != i) {
+			std::swap(A.begin() + i, A.begin() + largest);
+			max_heapify(largest);
+		}
 	}
-}
+
+private:
+	int size;
+	std::vector<T> A;
+};
 
 #endif

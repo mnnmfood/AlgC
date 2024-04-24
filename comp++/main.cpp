@@ -5,6 +5,8 @@
 #include "trees/binary_tree.h"
 #include "trees/red_black_tree.h"
 #include "hash_table/hash_table.h"
+#include "Advanced DS/b_tree.h"
+#include "trees/heaps.h"
 
 inline std::random_device rd{};
 inline std::mt19937 gen{rd()};
@@ -116,6 +118,28 @@ void testHashTable() {
 	std::cout << "Element with key 'cuatro': " << dict["cuat"] << "\n\n";
 }
 
+void testBTree() {
+	std::cout << "--- B-Tree \n";
+	BTree<int, 3> tree;
+	using res_t = BTree<int, 3>::return_t;
+	for (int i{ 0 }; i < 23; i++) {
+		tree.insert(2*i);
+	}
+	tree.insert(3);
+	std::cout << "Nodes: ";
+	tree.inorder(tree.root);
+	res_t res = tree.search(tree.root, 3);
+	std::cout << "\n";
+	std::cout << "Find Node 3: ";
+	std::cout << res.first->key[res.second] << "\n";
+	std::cout << "\n";
+	std::cout << "Delete Node 14: ";
+	tree.del(tree.root, 14);
+	tree.inorder(tree.root);
+	std::cout << "\n\n";
+
+}
+
 int main()
 {
 	testLinkedList();
@@ -123,4 +147,5 @@ int main()
 	testHashTable();
 	testBSTree();
 	testRBTree();
+	testBTree();
 }

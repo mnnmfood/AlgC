@@ -140,6 +140,26 @@ void testBTree() {
 
 }
 
+void testHeap() {
+	std::cout << "--- Heap Array\n";
+	std::cout << "Original: ";
+	std::vector<int> test = { 1, 4, 2 ,3, 9, 16, 10, 8, 7, 14 };
+	for (auto i : test) std::cout << i << ", ";
+	MaxHeap<int> heap(test);
+	std::vector<int> sorted = heap.sorted();
+	std::cout << "\nSorted: ";
+	for (auto i : sorted) std::cout << i << ", ";
+	std::cout << "\n\n";
+
+	std::cout << "--- Heap Queue\n";
+	HeapQueue<int> queue;
+	for (auto i : test) queue.insert(i);
+	std::cout << "Elements in order of priority: ";
+	for (int i{ 0 }; i < test.size(); i++) std::cout << queue.extract_max().key << ", ";
+	std::cout << "\n\n";
+
+}
+
 int main()
 {
 	testLinkedList();
@@ -148,4 +168,5 @@ int main()
 	testBSTree();
 	testRBTree();
 	testBTree();
+	testHeap();
 }

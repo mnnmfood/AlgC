@@ -7,6 +7,7 @@
 #include "hash_table/hash_table.h"
 #include "Advanced DS/b_tree.h"
 #include "trees/heaps.h"
+#include "trees/fibonacci_heap.h"
 
 inline std::random_device rd{};
 inline std::mt19937 gen{rd()};
@@ -160,6 +161,21 @@ void testHeap() {
 
 }
 
+void testFibonacci() {
+	std::cout << "--- Fibonacci Heap\n";
+	FibHeap<int> queue;
+	std::cout << "Original: ";
+	std::vector<int> test = { 1, 4, 2 ,3, 9, 16, 10, 8, 7, 14 };
+	for (auto i : test) {
+		std::cout << i << ", ";
+		queue.insert(i);
+	}
+	std::cout << "\n";
+	std::cout << "Elements in order of priority: ";
+	for (int i{ 0 }; i < test.size(); i++) std::cout << queue.extract_min()->key << ", ";
+	std::cout << "\n\n";
+}
+
 int main()
 {
 	testLinkedList();
@@ -169,4 +185,5 @@ int main()
 	testRBTree();
 	testBTree();
 	testHeap();
+	testFibonacci();
 }

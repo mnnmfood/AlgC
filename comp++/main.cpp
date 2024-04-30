@@ -163,16 +163,29 @@ void testHeap() {
 
 void testFibonacci() {
 	std::cout << "--- Fibonacci Heap\n";
+	typedef FibHeap<int>::node node;
 	FibHeap<int> queue;
 	std::cout << "Original: ";
-	std::vector<int> test = { 1, 4, 2 ,3, 9, 16, 10, 8, 7, 14 };
+	std::vector<int> test = { 1, 4, 2 ,3, 9, 16, 10, 8, 7, 14, 5, 20, 18};
+	std::vector<node*> node_list;
 	for (auto i : test) {
 		std::cout << i << ", ";
-		queue.insert(i);
+		node_list.push_back(queue.insert(i));
 	}
+	std::cout << "\n\n";
+	std::cout << "Extract first 3 elements in order of priority: ";
+	for (int i{ 0 }; i < 2; i++) std::cout << queue.extract_min()->key << ", ";
 	std::cout << "\n";
-	std::cout << "Elements in order of priority: ";
-	for (int i{ 0 }; i < test.size(); i++) std::cout << queue.extract_min()->key << ", ";
+	queue.inorder();
+	std::cout << "\n";
+	int idx = 9;
+	std::cout << "Decrease key " << test[idx] << " to " << 0 << "\n";
+	queue.decrease_key(node_list[idx], 0);
+	queue.inorder();
+	std::cout << "\n";
+	std::cout << "Extract rest of elements in order of priority: ";
+	int size = queue.size();
+	for (int i{ 0 }; i < size; i++) std::cout << queue.extract_min()->key << ", ";
 	std::cout << "\n\n";
 }
 

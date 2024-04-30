@@ -53,10 +53,10 @@ struct FBNode
 template<typename T>
 class FibHeap
 {
-	typedef FBNode<T> node;
 public:
+	typedef FBNode<T> node;
 	FibHeap() : min{ 0 }, n{ 0 }, deg{ 0 } {}
-	void insert(T k) {
+	node* insert(T k) {
 		node* p = new node(k);
 		p->insert_left(min);
 		if ((min == 0) || (p->key < min->key)){
@@ -64,6 +64,7 @@ public:
 		}
 		deg++;
 		n++;
+		return p;
 	}
 	
 	// Remove y from root list and make it a child of x
@@ -72,8 +73,8 @@ public:
 		y->insert_left(x->c);
 		if (x->c == 0) {
 			x->c = y;
-			y->p = x;
 		}
+		y->p = x;
 		x->deg++;
 		y->mark = false;
 	}
@@ -118,6 +119,7 @@ public:
 	}
 	
 	node* extract_min() {
+		assert((deg > 0) && "Queue is empty");
 		node* z = min;
 		if (z != 0) {
 			node* c = z->c;
@@ -142,7 +144,42 @@ public:
 		}
 		return z;
 	}
-	
+
+	void cut(node* x, node* y) {
+		x->remove(); // remove it from y child list
+		if (y->c == x) y->c = x->left;
+		y->deg--;
+		x->insert_left(min); // add it to root list
+		deg++;
+		x->p = 0;
+		x->mark = 0;
+	}
+
+	void cascading_cut(node* y) {
+		node* z = y->p;
+		if (z != 0) {
+			if (y->mark == 0) {
+				y->mark = 1;
+			}
+			else {
+				cut(y, z);
+				cascading_cut(z);
+			}
+		}
+	}
+
+	void decrease_key(node* x, T k) {
+		assert((k < x->key) && "New key is greater than current\n");
+		x->key = k;
+		node* y = x->p;
+		if ((y!=0) && (y->key > x->key)){
+			cut(x, y);
+			cascading_cut(y);
+		}
+		if (x->key < min->key) min = x;
+	}
+
+	// Tree traversal
 	void inorder() {
 		node* c = min;
 		for (int i{ 0 }; i < deg; i++) {
@@ -153,9 +190,7 @@ public:
 			std::cout << "\n";
 		}
 	}
-
 	void inorder(node* p) {
-		// traverse children linked list
 		node* c = p->c;
 		for (int i{ 0 }; i < p->deg; i++) {
 			inorder(c);
@@ -163,7 +198,8 @@ public:
 			c = c->right;
 		}
 	}
-
+	
+	int size() { return n; }
 	friend FibHeap<T> merge(FibHeap<T> H1, FibHeap<T> H2);
 private:
 	int n; // total number of nodes

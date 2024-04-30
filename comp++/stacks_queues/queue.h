@@ -1,11 +1,13 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-template<typename T, size_t size = 100>
+template<typename T>
 class Queue
 {
 public: 
-	Queue() : first{ -1 }, last{ -1 } {}
+	Queue(int n) : size{ n }, first{ -1 }, last{ -1 } {
+		data = new T[size];
+	}
 	int isFull() { return (first == 0 && last == size - 1) || (first == last + 1); }
 	int isEmpty() { return first == -1; }
 	void enqueue(T el){
@@ -30,10 +32,11 @@ public:
 			else first++;
 			return temp;
 		}
-
 	}
+	~Queue() { delete data; }
 private:
-	T data[size];
+	int size;
+	T* data;
 	int first, last;
 };
 

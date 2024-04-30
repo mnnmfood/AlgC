@@ -8,6 +8,7 @@
 #include "Advanced DS/b_tree.h"
 #include "trees/heaps.h"
 #include "trees/fibonacci_heap.h"
+#include "graphs/Graph.h"
 
 inline std::random_device rd{};
 inline std::mt19937 gen{rd()};
@@ -22,15 +23,22 @@ void fill(T* arr, int len) {
 
 void testQueue() {
 	std::cout << "--- QUEUE\n";
-	Queue<int, 3> q;
+	std::cout << "Queue size 3\nEnqueue: 2, 3 \n";
+	Queue<int> q(3);
 	q.enqueue(2);
 	q.enqueue(3);
 	std::cout << "Is queue empty: " << (q.isEmpty() ? "True" : "False") << "\n";
+	std::cout << "Is queue full: " << (q.isFull() ? "True" : "False") << "\n";
+	std::cout << "Enqueue: 5 \n";
 	q.enqueue(5);
 	std::cout << "Is queue full: " << (q.isFull() ? "True" : "False") << "\n";
 	int var = q.dequeue();
 	std::cout << "First inserted: " << var << "\n";
-	std::cout << "\n";
+	std::cout << "Enqueue 4" << "\n";
+	q.enqueue(4);
+	std::cout << "Elements in order: ";
+	for (int i{ 0 }; i < 3; i++) std::cout << q.dequeue() << ", ";
+	std::cout << "\n\n";
 }
 
 void testLinkedList() {
@@ -189,6 +197,20 @@ void testFibonacci() {
 	std::cout << "\n\n";
 }
 
+void testGraph() {
+	std::cout << "--- Graph\n";
+	UndiGraph graph(5);
+	graph.addEdge(0, 1);
+	graph.addEdge(1, 2);
+	graph.addEdge(2, 3);
+	graph.addEdge(3, 4);
+	graph.addEdge(4, 0);
+	std::vector<int> path = graph.breadth_first(0, 4);
+	std::cout << "Path (0, 4): ";
+	for (auto i : path) std::cout << i << ", ";
+	std::cout << "\n\n";
+}
+
 int main()
 {
 	testLinkedList();
@@ -199,4 +221,5 @@ int main()
 	testBTree();
 	testHeap();
 	testFibonacci();
+	testGraph();
 }

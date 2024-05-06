@@ -9,6 +9,8 @@
 #include "trees/heaps.h"
 #include "trees/fibonacci_heap.h"
 #include "graphs/Graph.h"
+#include "sets/DisjForest.h"
+#include "graphs/MST.h"
 
 inline std::random_device rd{};
 inline std::mt19937 gen{rd()};
@@ -199,16 +201,60 @@ void testFibonacci() {
 
 void testGraph() {
 	std::cout << "--- Graph\n";
+	typedef UndiGraph::node node;
 	UndiGraph graph(5);
 	graph.addEdge(0, 1);
 	graph.addEdge(1, 2);
 	graph.addEdge(2, 3);
 	graph.addEdge(3, 4);
 	graph.addEdge(4, 0);
-	std::vector<int> path = graph.breadth_first(0, 4);
+	std::vector<node*> path = graph.breadth_first(0, 4);
 	std::cout << "Path (0, 4): ";
-	for (auto i : path) std::cout << i << ", ";
+	for (auto i : path) std::cout << i->idx << "(dist=" << i->d << "), ";
 	std::cout << "\n\n";
+}
+
+void testDisjForest() {
+	std::cout << "--- Disjunt Forest\n";
+	typedef DisjForest<int>::node node;
+	DisjForest<int> sets;
+	std::vector<node*> nodes;
+	for (int i{ 0 }; i < 10; i++) {
+		nodes.push_back(new node(i));
+		sets.Make_set(nodes[i]);
+	}
+	std::cout << "Before Unions: ";
+	for (auto i: sets.roots) {
+		std::cout << "(rank=" << i->rank << ", key=" << i->key << ")  ";
+	}
+	std::cout << "\n";
+	for (int i{ 0 }; i < 5; i++) {
+		sets.Union(nodes[2*i], nodes[2*i+1]);
+	}
+	for (int i{ 0 }; i < sets.roots.size()-1; i++) {
+		sets.Union(sets.roots[i], sets.roots[i+1]);
+	}
+	std::cout << "After Unions: ";
+	for (auto i: sets.roots) {
+		std::cout << "(rank=" << i->rank << ", key=" << i->key << ")  ";
+	}
+	std::cout << "\n";
+	std::cout << "Root of node " << nodes[7]->key << ": ";
+	std::cout << sets.Find_set(nodes[7])->key;
+	std::cout << "\n\n";
+}
+
+void testMST() {
+	std::cout << "--- Minimum Spanning Tree \n";
+	typedef UndiGraph::node node;
+	typedef UndiGraph::edge edge;
+	UndiGraph graph(5);
+	graph.addEdge(0, 1, 1);
+	graph.addEdge(1, 2, 5);
+	graph.addEdge(2, 3, 4);
+	graph.addEdge(3, 4, 2);
+	graph.addEdge(4, 0, 3);
+	std::vector<edge> mst = Kruskal(graph);
 }
 
 int main()
@@ -222,4 +268,6 @@ int main()
 	testHeap();
 	testFibonacci();
 	testGraph();
+	testDisjForest();
+	testMST();
 }

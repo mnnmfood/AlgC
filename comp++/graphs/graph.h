@@ -4,6 +4,8 @@
 #include <vector>
 #include <limits>
 #include "stacks_queues/queue.h"
+#include "sets/DisjForest.h"
+#include "trees/fibonacci_heap.h"
 
 enum GColor
 {
@@ -12,14 +14,14 @@ enum GColor
 	black
 };
 
-struct GNode
+struct GNode: public DisjNode<int>, public FBNode<int>
 {
 	int idx;
 	int color;
-	int p;
+	int pi;
 	int d;
 	GNode(int i) : idx{ i }, color{ white }, 
-		p{ -1 }, d{ std::numeric_limits<int>::max() } {}
+		pi{ -1 }, d{ std::numeric_limits<int>::max() } {}
 	void update(int c) { color = c; }
 };
 
@@ -49,8 +51,11 @@ public:
 	}
 	void addEdge(int u, int v, int w=0) {
 		assert((u < Vn) && "Index exceeded graph size\n");
-		Adj[u].push_back(node_list[v]);
-		edge_list.push_back(GEdge(node_list[u], node_list[v], w));
+		GEdge edge(node_list[u], node_list[v], w);
+		GEdge edge2(node_list[v], node_list[u], w);
+		Adj[u].push_back(edge);
+		Adj[v].push_back(edge2);
+		edge_list.push_back(edge);
 	}
 
 	std::vector<GNode*> breadth_first(int si, int di) {
@@ -62,11 +67,11 @@ public:
 		while (!q.isEmpty()) {
 			node* u = q.dequeue();
 			for (int i{ 0 }; i < Adj[u->idx].size(); i++) {
-				node* v = Adj[u->idx][i];
+				node* v = Adj[u->idx][i].v;
 				if (v->color == white) {
 					v->d = u->d + 1;
 					v->color = gray;
-					v->p = u->idx;
+					v->pi = u->idx;
 					q.enqueue(v);
 				}
 			}
@@ -74,37 +79,50 @@ public:
 		}
 		node* d = node_list[di];
 		std::vector<GNode*> res;
-		while (d->p != -1) {
+		while (d->pi != -1) {
 			res.push_back(d);
-			d = node_list[d->p];
+			d = node_list[d->pi];
 		}
 		res.push_back(d);
 		return res;
 	}
 
 	friend std::vector<GEdge> Kruskal(UndiGraph);
+	friend std::vector<GEdge> Prim(UndiGraph);
 protected:
 	int En; // num edges
 	int Vn; // num vertices
-	std::vector<std::vector<GNode*>> Adj; // adjacency list
+	std::vector<std::vector<GEdge>> Adj; // adjacency list
 	std::vector<node*> node_list;
 	std::vector<edge> edge_list;
 
 	void build(std::vector<std::vector<int>>& m) {
 		int n_rows = m.size();
 		for (int i{ 0 }; i < n_rows; i++) {
+			node* v = node_list[i];
 			for (int k{ 0 }; k < (n_rows-i); k++) {
 				node* u = node_list[k];
-				if (m[i][k] != 0) Adj[i].push_back(u);
+				if (m[i][k] != 0) {
+					GEdge edge(u, v, m[i][k]);
+					Adj[i].push_back(edge);
+					Adj[k].push_back(edge);
+					edge_list.push_back(edge);
+				}
 			}
 		}
 	}
 	void build_sparse(std::vector<std::vector<int>>& m) {
 		int n_rows = m.size();
 		for (int i{ 0 }; i < n_rows; i++) {
+			node* v = node_list[i];
 			for (int k{ 0 }; k < i; k++) {
 				node* u = node_list[k];
-				if (m[i][k] != 0) Adj[i].push_back(u);
+				if (m[i][k] != 0) {
+					GEdge edge(u, v, m[i][k]);
+					Adj[i].push_back(edge);
+					Adj[k].push_back(edge);
+					edge_list.push_back(edge);
+				}
 			}
 		}
 	}

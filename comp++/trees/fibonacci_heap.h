@@ -4,6 +4,8 @@
 #include <vector>
 #include <cmath>
 
+
+
 template<typename T>
 struct FBNode
 {
@@ -51,6 +53,11 @@ struct FBNode
 };
 
 template<typename T>
+void defFun(int i, FBNode<T>* c) {
+	std::cout << c->key << ", ";
+}
+
+template<typename T>
 class FibHeap
 {
 public:
@@ -58,6 +65,10 @@ public:
 	FibHeap() : min{ 0 }, n{ 0 }, deg{ 0 } {}
 	node* insert(T k) {
 		node* p = new node(k);
+		return insert(p);
+	}
+
+	node* insert(node* p) {
 		p->insert_left(min);
 		if ((min == 0) || (p->key < min->key)){
 			min = p;
@@ -79,45 +90,7 @@ public:
 		y->mark = false;
 	}
 	
-	void Consolidate() {
-		int D_n = static_cast<int>(floor(log2(n)));
-		std::vector<node*> A(D_n + 1);
-		for (int i{ 0 }; i < D_n; i++) {
-			A[i] = 0;
-		}
-		node* x = min;
-		for (int i{ 0 }; i < deg; i++) {
-			int d = x->deg;
-			while (A[d] != 0) {
-				node* y = A[d];
-				if (y->key < x->key) { // exchange x and y pointers
-					// so that x remains a root
-					node* temp = y;
-					y = x;
-					x = temp;
-				}
-				link(y, x);
-				A[d] = 0;
-				d++;
-			}
-			A[d] = x;
-			x = x->right;
-		}
-		// Reconstruct root list from A
-		min = 0;
-		deg = 0;
-		for (int i{ 0 }; i <= D_n; i++) {
-			if (A[i] != 0) {
-				A[i]->insert_left(min);
-				deg++;
-				if ((min == 0) || (A[i]->key < min->key)) {
-					min = A[i];
-				}
-				A[i] = 0;
-			}
-		}
-	}
-	
+
 	node* extract_min() {
 		assert((deg > 0) && "Queue is empty");
 		node* z = min;
@@ -144,6 +117,88 @@ public:
 		}
 		return z;
 	}
+	void decrease_key(node* x, T k) {
+		assert((k < x->key) && "New key is greater than current\n");
+		x->key = k;
+		node* y = x->p;
+		if ((y!=0) && (y->key > x->key)){
+			cut(x, y);
+			cascading_cut(y);
+		}
+		if (x->key < min->key) min = x;
+	}
+
+	// Tree traversal
+	void inorder(void (*fun)(int, node*)=defFun<T>) {
+		node* c = min;
+		for (int i{ 0 }; i < deg; i++) {
+			std::cout << "Heap " << i << ": ";
+			fun(i, c);
+			inorder(c, fun);
+			c = c->right;
+			std::cout << "\n";
+		}
+	}
+	void inorder(node* p, void (*fun)(int, node*)) {
+		node* c = p->c;
+		for (int i{ 0 }; i < p->deg; i++) {
+			inorder(c, fun);
+			fun(i, c);
+			c = c->right;
+		}
+	}
+	
+	int isEmpty() { return n == 0; }
+	int size() { return n; }
+	friend FibHeap<T> merge(FibHeap<T> H1, FibHeap<T> H2);
+private:
+	void Consolidate() {
+		int D_n = static_cast<int>(floor(log2(n)));
+		std::vector<node*> A(D_n + 1);
+		for (int i{ 0 }; i < D_n; i++) {
+			A[i] = 0;
+		}
+
+		std::vector<node*> roots;
+		node* start = min;
+		node* iter = start->right;
+		roots.push_back(start);
+		while (iter != start) {
+			roots.push_back(iter);
+			iter = iter->right;
+		}
+
+		for (int i{ 0 }; i < roots.size(); i++) {
+			node* x = roots[i];
+			int d = x->deg;
+			while (A[d] != 0) {
+				node* y = A[d];
+				if (y->key < x->key) { // exchange x and y pointers
+					// so that ptr to x remains a root
+					node* temp = y;
+					y = x;
+					x = temp;
+				}
+				link(y, x);
+				A[d] = 0;
+				d++;
+			}
+			A[d] = x;
+		}
+		// Reconstruct root list from A
+		min = 0;
+		deg = 0;
+		for (int i{ 0 }; i <= D_n; i++) {
+			if (A[i] != 0) {
+				A[i]->insert_left(min);
+				deg++;
+				if ((min == 0) || (A[i]->key < min->key)) {
+					min = A[i];
+				}
+				A[i] = 0;
+			}
+		}
+	}
 
 	void cut(node* x, node* y) {
 		x->remove(); // remove it from y child list
@@ -167,41 +222,7 @@ public:
 			}
 		}
 	}
-
-	void decrease_key(node* x, T k) {
-		assert((k < x->key) && "New key is greater than current\n");
-		x->key = k;
-		node* y = x->p;
-		if ((y!=0) && (y->key > x->key)){
-			cut(x, y);
-			cascading_cut(y);
-		}
-		if (x->key < min->key) min = x;
-	}
-
-	// Tree traversal
-	void inorder() {
-		node* c = min;
-		for (int i{ 0 }; i < deg; i++) {
-			std::cout << "Heap " << i << ": ";
-			std::cout << c->key << ", ";
-			inorder(c);
-			c = c->right;
-			std::cout << "\n";
-		}
-	}
-	void inorder(node* p) {
-		node* c = p->c;
-		for (int i{ 0 }; i < p->deg; i++) {
-			inorder(c);
-			std::cout << c->key << ", ";
-			c = c->right;
-		}
-	}
 	
-	int size() { return n; }
-	friend FibHeap<T> merge(FibHeap<T> H1, FibHeap<T> H2);
-private:
 	int n; // total number of nodes
 	node* min; // ptr to root list
 	int deg; // number of nodes in root list

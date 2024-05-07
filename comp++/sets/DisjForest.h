@@ -8,11 +8,12 @@ template<typename T>
 struct DisjNode
 {
 	typedef DisjNode<T> node;
-	T key;
+	T disj_key;
 	int rank;
 	node* p;
-	DisjNode(T k) : key{ k }, rank{ 0 } { p = this; }
-	DisjNode(T k, node* parent) : key{ k }, rank{ 0 }, p { parent } {}
+	DisjNode() : disj_key{ 0 }, rank{ 0 } { p = this; }
+	DisjNode(T k) : disj_key{ k }, rank{ 0 } { p = this; }
+	DisjNode(T k, node* parent) : disj_key{ k }, rank{ 0 }, p { parent } {}
 };
 
 template<typename T>

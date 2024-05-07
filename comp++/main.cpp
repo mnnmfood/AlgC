@@ -202,14 +202,24 @@ void testFibonacci() {
 void testGraph() {
 	std::cout << "--- Graph\n";
 	typedef UndiGraph::node node;
-	UndiGraph graph(5);
-	graph.addEdge(0, 1);
-	graph.addEdge(1, 2);
-	graph.addEdge(2, 3);
-	graph.addEdge(3, 4);
-	graph.addEdge(4, 0);
-	std::vector<node*> path = graph.breadth_first(0, 4);
-	std::cout << "Path (0, 4): ";
+	UndiGraph graph(9);
+	graph.addEdge(0, 1, 4);
+	graph.addEdge(1, 2, 8);
+	graph.addEdge(2, 3, 7);
+	graph.addEdge(3, 4, 9);
+	graph.addEdge(4, 5, 10);
+	graph.addEdge(5, 6, 2);
+	graph.addEdge(6, 7, 1);
+	graph.addEdge(7, 8, 7);
+
+	graph.addEdge(1, 7, 11);
+	graph.addEdge(6, 8, 6);
+	graph.addEdge(8, 2, 2);
+	graph.addEdge(2, 5, 4);
+	graph.addEdge(3, 5, 14);
+
+std::vector<node*> path = graph.breadth_first(0, 5);
+	std::cout << "Path (0, 5): ";
 	for (auto i : path) std::cout << i->idx << "(dist=" << i->d << "), ";
 	std::cout << "\n\n";
 }
@@ -225,7 +235,7 @@ void testDisjForest() {
 	}
 	std::cout << "Before Unions: ";
 	for (auto i: sets.roots) {
-		std::cout << "(rank=" << i->rank << ", key=" << i->key << ")  ";
+		std::cout << "(rank=" << i->rank << ", key=" << i->disj_key << ")  ";
 	}
 	std::cout << "\n";
 	for (int i{ 0 }; i < 5; i++) {
@@ -236,11 +246,11 @@ void testDisjForest() {
 	}
 	std::cout << "After Unions: ";
 	for (auto i: sets.roots) {
-		std::cout << "(rank=" << i->rank << ", key=" << i->key << ")  ";
+		std::cout << "(rank=" << i->rank << ", key=" << i->disj_key << ")  ";
 	}
 	std::cout << "\n";
-	std::cout << "Root of node " << nodes[7]->key << ": ";
-	std::cout << sets.Find_set(nodes[7])->key;
+	std::cout << "Root of node " << nodes[7]->disj_key << ": ";
+	std::cout << sets.Find_set(nodes[7])->disj_key;
 	std::cout << "\n\n";
 }
 
@@ -248,13 +258,35 @@ void testMST() {
 	std::cout << "--- Minimum Spanning Tree \n";
 	typedef UndiGraph::node node;
 	typedef UndiGraph::edge edge;
-	UndiGraph graph(5);
-	graph.addEdge(0, 1, 1);
-	graph.addEdge(1, 2, 5);
-	graph.addEdge(2, 3, 4);
-	graph.addEdge(3, 4, 2);
-	graph.addEdge(4, 0, 3);
-	std::vector<edge> mst = Kruskal(graph);
+	UndiGraph graph(9);
+	graph.addEdge(0, 1, 4);
+	graph.addEdge(1, 2, 8);
+	graph.addEdge(2, 3, 7);
+	graph.addEdge(3, 4, 9);
+	graph.addEdge(4, 5, 10);
+	graph.addEdge(5, 6, 2);
+	graph.addEdge(6, 7, 1);
+	graph.addEdge(7, 8, 7);
+
+	graph.addEdge(0, 7, 8);
+	graph.addEdge(1, 7, 11);
+	graph.addEdge(6, 8, 6);
+	graph.addEdge(8, 2, 2);
+	graph.addEdge(2, 5, 4);
+	graph.addEdge(3, 5, 14);
+
+	std::vector<edge> kurskal = Kruskal(graph);
+	std::cout << "Kruskal: ";
+	for (auto edge : kurskal) {
+		std::cout << "(" << edge.u->idx << ", " << edge.v->idx << ")  ";
+	}
+	std::cout << "\n";
+	std::vector<edge> prim = Prim(graph);
+	std::cout << "Kruskal: ";
+	for (auto edge : prim) {
+		std::cout << "(" << edge.u->idx << ", " << edge.v->idx << ")  ";
+	}
+	std::cout << "\n\n";
 }
 
 int main()

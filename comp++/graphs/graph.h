@@ -32,29 +32,37 @@ struct GEdge
 	GEdge(GNode* u_, GNode* v_, int weight) : u{ u_ }, v{ v_ }, w{ weight } {}
 };
 
-class UndiGraph
+class Graph
 {
 public:
 	typedef GNode node;
 	typedef GEdge edge;
 
-	UndiGraph(int vn) : Vn{ vn } { 
+	Graph(int vn) : Vn{ vn } { 
 		for (int i{ 0 }; i < vn; i++) {
 			node_list.push_back(new node(i));
 		}
 		Adj.resize(Vn); 
 	}
-	UndiGraph(std::vector<std::vector<int>>& adj_m) { // from adj matrix
+	Graph(std::vector<std::vector<int>>& adj_m) { // from adj matrix
 		if (check_square(adj_m)) build(adj_m);
 		else if (check_triang(adj_m)) build_sparse(adj_m);
 		else throw std::exception("Incorrect adjacency matrix\n");
 	}
-	void addEdge(int u, int v, int w=0) {
+	void addEdgeUndir(int u, int v, int w=0) {
 		assert((u < Vn) && "Index exceeded graph size\n");
 		GEdge edge(node_list[u], node_list[v], w);
 		GEdge edge2(node_list[v], node_list[u], w);
 		Adj[u].push_back(edge);
 		Adj[v].push_back(edge2);
+		edge_list.push_back(edge);
+		edge_list.push_back(edge2);
+	}
+
+	void addEdgeDir(int u, int v, int w=0) {
+		assert((u < Vn) && "Index exceeded graph size\n");
+		GEdge edge(node_list[u], node_list[v], w);
+		Adj[u].push_back(edge);
 		edge_list.push_back(edge);
 	}
 
@@ -87,14 +95,14 @@ public:
 		return res;
 	}
 
-	friend std::vector<GEdge> Kruskal(UndiGraph);
-	friend std::vector<GEdge> Prim(UndiGraph);
+	friend std::vector<GEdge> Kruskal(Graph);
+	friend std::vector<GEdge> Prim(Graph);
+	std::vector<node*> node_list;
+	std::vector<edge> edge_list;
 protected:
 	int En; // num edges
 	int Vn; // num vertices
 	std::vector<std::vector<GEdge>> Adj; // adjacency list
-	std::vector<node*> node_list;
-	std::vector<edge> edge_list;
 
 	void build(std::vector<std::vector<int>>& m) {
 		int n_rows = m.size();

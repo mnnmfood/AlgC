@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <random>
+#include <algorithm>
 #include "linked_list/linked_list.h"
 #include "stacks_queues/queue.h"
 #include "trees/binary_tree.h"
@@ -11,6 +12,7 @@
 #include "graphs/Graph.h"
 #include "sets/DisjForest.h"
 #include "graphs/MST.h"
+#include "graphs/shortest_path.h"
 
 inline std::random_device rd{};
 inline std::mt19937 gen{rd()};
@@ -201,22 +203,22 @@ void testFibonacci() {
 
 void testGraph() {
 	std::cout << "--- Graph\n";
-	typedef UndiGraph::node node;
-	UndiGraph graph(9);
-	graph.addEdge(0, 1, 4);
-	graph.addEdge(1, 2, 8);
-	graph.addEdge(2, 3, 7);
-	graph.addEdge(3, 4, 9);
-	graph.addEdge(4, 5, 10);
-	graph.addEdge(5, 6, 2);
-	graph.addEdge(6, 7, 1);
-	graph.addEdge(7, 8, 7);
+	typedef Graph::node node;
+	Graph graph(9);
+	graph.addEdgeUndir(0, 1, 4);
+	graph.addEdgeUndir(1, 2, 8);
+	graph.addEdgeUndir(2, 3, 7);
+	graph.addEdgeUndir(3, 4, 9);
+	graph.addEdgeUndir(4, 5, 10);
+	graph.addEdgeUndir(5, 6, 2);
+	graph.addEdgeUndir(6, 7, 1);
+	graph.addEdgeUndir(7, 8, 7);
 
-	graph.addEdge(1, 7, 11);
-	graph.addEdge(6, 8, 6);
-	graph.addEdge(8, 2, 2);
-	graph.addEdge(2, 5, 4);
-	graph.addEdge(3, 5, 14);
+	graph.addEdgeUndir(1, 7, 11);
+	graph.addEdgeUndir(6, 8, 6);
+	graph.addEdgeUndir(8, 2, 2);
+	graph.addEdgeUndir(2, 5, 4);
+	graph.addEdgeUndir(3, 5, 14);
 
 std::vector<node*> path = graph.breadth_first(0, 5);
 	std::cout << "Path (0, 5): ";
@@ -256,35 +258,62 @@ void testDisjForest() {
 
 void testMST() {
 	std::cout << "--- Minimum Spanning Tree \n";
-	typedef UndiGraph::node node;
-	typedef UndiGraph::edge edge;
-	UndiGraph graph(9);
-	graph.addEdge(0, 1, 4);
-	graph.addEdge(1, 2, 8);
-	graph.addEdge(2, 3, 7);
-	graph.addEdge(3, 4, 9);
-	graph.addEdge(4, 5, 10);
-	graph.addEdge(5, 6, 2);
-	graph.addEdge(6, 7, 1);
-	graph.addEdge(7, 8, 7);
+	typedef Graph::node node;
+	typedef Graph::edge edge;
+	Graph graph(9);
+	graph.addEdgeUndir(0, 1, 4);
+	graph.addEdgeUndir(1, 2, 8);
+	graph.addEdgeUndir(2, 3, 7);
+	graph.addEdgeUndir(3, 4, 9);
+	graph.addEdgeUndir(4, 5, 10);
+	graph.addEdgeUndir(5, 6, 2);
+	graph.addEdgeUndir(6, 7, 1);
+	graph.addEdgeUndir(7, 8, 7);
 
-	graph.addEdge(0, 7, 8);
-	graph.addEdge(1, 7, 11);
-	graph.addEdge(6, 8, 6);
-	graph.addEdge(8, 2, 2);
-	graph.addEdge(2, 5, 4);
-	graph.addEdge(3, 5, 14);
+	graph.addEdgeUndir(0, 7, 8);
+	graph.addEdgeUndir(1, 7, 11);
+	graph.addEdgeUndir(6, 8, 6);
+	graph.addEdgeUndir(8, 2, 2);
+	graph.addEdgeUndir(2, 5, 4);
+	graph.addEdgeUndir(3, 5, 14);
 
 	std::vector<edge> kurskal = Kruskal(graph);
+	std::sort(kurskal.begin(), kurskal.end(), [](edge x, edge y) {return x.u->idx < y.u->idx; });
 	std::cout << "Kruskal: ";
 	for (auto edge : kurskal) {
 		std::cout << "(" << edge.u->idx << ", " << edge.v->idx << ")  ";
 	}
 	std::cout << "\n";
 	std::vector<edge> prim = Prim(graph);
-	std::cout << "Kruskal: ";
+	std::sort(prim.begin(), prim.end(), [](edge x, edge y) {return x.v->idx < y.v->idx; });
+	std::cout << "Prim: ";
 	for (auto edge : prim) {
 		std::cout << "(" << edge.u->idx << ", " << edge.v->idx << ")  ";
+	}
+	std::cout << "\n\n";
+}
+
+void testShortestPath() {
+	std::cout << "--- Single Source Shortest Path \n";
+	typedef Graph::node node;
+	typedef Graph::edge edge;
+	Graph graph(5);
+	graph.addEdgeDir(0, 1, 6);
+	graph.addEdgeDir(0, 4, 7);
+	graph.addEdgeDir(1, 2, 5);
+	graph.addEdgeDir(1, 3, -4);
+	graph.addEdgeDir(1, 4, 8);
+	graph.addEdgeDir(2, 1, 8);
+	graph.addEdgeDir(3, 2, 7);
+	graph.addEdgeDir(3, 0, 2);
+	graph.addEdgeDir(4, 2, -3);
+	graph.addEdgeDir(4, 3, 9);
+
+	std::vector<GNode*> res;
+	int bad = Bellman_Ford(graph, graph.node_list[3], graph.node_list[1], res);
+	std::cout << "Path from " << graph.node_list[3]->idx << " to " << graph.node_list[1]->idx << " : ";
+	for (auto node : res) {
+		std::cout << node->idx << ", ";
 	}
 	std::cout << "\n\n";
 }
@@ -302,4 +331,5 @@ int main()
 	testGraph();
 	testDisjForest();
 	testMST();
+	testShortestPath();
 }

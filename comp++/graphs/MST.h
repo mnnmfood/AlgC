@@ -6,7 +6,7 @@
 #include<sets/DisjForest.h>
 #include "trees/fibonacci_heap.h"
 
-std::vector<GEdge> Kruskal(UndiGraph G) {
+std::vector<GEdge> Kruskal(Graph G) {
 	std::vector<GEdge> A;
 	std::vector<GEdge> edges = G.edge_list;
 	std::vector<GNode*> nodes = G.node_list;
@@ -33,7 +33,7 @@ int debugCb2(int i, FBNode<int>* c) {
 	return static_cast<GNode*>(c)->idx;
 }
 
-std::vector<GEdge> Prim(UndiGraph G) {
+std::vector<GEdge> Prim(Graph G) {
 	FibHeap<int> Q;
 	std::vector<GNode*> nodes = G.node_list;
 	std::vector<int> isinQ;
@@ -48,26 +48,18 @@ std::vector<GEdge> Prim(UndiGraph G) {
 		Q.insert(nodes[i]);
 		isinQ.push_back(1);
 	}
-	Q.inorder(debugCb);
 	while (!Q.isEmpty()) {
 		GNode* u = static_cast<GNode*>(Q.extract_min());
-		Q.inorder(debugCb);
 		isinQ[u->idx] = 0;
-		std::cout << "\nInvestigating edge " << u->idx << ": ";
 		for (int i{ 0 }; i < G.Adj[u->idx].size(); i++) {
 			GNode* v = G.Adj[u->idx][i].v; // for each neighbor
 			int w = G.Adj[u->idx][i].w;
 			if (isinQ[v->idx] && (w < v->key)) {
-				std::cout << "(" << u->idx << ", " << v->idx << ") ";
 				v->pi = u->idx;
 				Q.decrease_key(v, w);
-				//Q.inorder(debugCb);
-				std::cout << "\n";
 			}
 		}
-		std::cout << "\n";
 	}
-	std::cout << "\n";
 	std::vector<GEdge> res;
 	for (int i{ 0 }; i < nodes.size(); i++) {
 		GNode* u = nodes[i];

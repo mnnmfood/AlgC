@@ -41,6 +41,9 @@ struct FBNode
 
 	void remove() {
 		if (right != this) { // if list is not empty
+			if (p != 0 && p->c == this) {
+				p->c = right;
+			}
 			right->left = left;
 			left->right = right;
 		}

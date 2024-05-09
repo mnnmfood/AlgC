@@ -57,19 +57,31 @@ int Bellman_Ford(Graph G, GNode* s, GNode* d, std::vector<GNode*>& res){
 std::vector<GNode*> Dijkstra(Graph G, GNode* s, GNode* d) {
 	initalize_single(G, s);
 	FibHeap<int> q;
-	for (size_t i{0}; i < G.node_list.size(); i++) {
-		G.node_list[i]->key = MAX_INT;
-		q.insert(G.node_list[i]);
+	std::vector<int> isinQ;
+	for (int i{ 0 }; i < G.node_list.size(); i++){
+		GNode* node = G.node_list[i];
+		node->key = MAX_INT;
+		q.insert(node);
+		isinQ.push_back(1);
 	}
 	q.decrease_key(s, 0);
-	
+	q.inorder(debugCb);
+	std::cout << "\n\n";
 	while (!q.isEmpty()) {
 		GNode* u = static_cast<GNode*>(q.extract_min());
+		isinQ[u->idx] = 0;
 		std::vector<GEdge>& adj_list = G.Adj[u->idx];
+		std::cout << "Investingating vertex: " << u->idx << "\n";
 		for (int i{ 0 }; i < adj_list.size(); i++) {
 			GNode* v = adj_list[i].v;
-			relax(u, v, adj_list[i].w);
-			q.decrease_key(v, v->d);
+			if (isinQ[v->idx]) {
+				std::cout << "Neighbor: " << v->idx;
+				relax(u, v, adj_list[i].w);
+				std::cout << " w0=" << v->key << " w1=" << v->d << "\n";
+				q.decrease_key(v, v->d);
+				q.inorder(debugCb);
+				std::cout << "\n\n";
+			}
 		}
 	}
 

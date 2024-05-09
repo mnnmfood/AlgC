@@ -26,7 +26,8 @@ std::vector<GEdge> Kruskal(Graph G) {
 }
 
 void debugCb(int i, FBNode<int>* c) {
-	std::cout << static_cast<GNode*>(c)->idx << ", ";
+	GNode* temp = static_cast<GNode*>(c);
+	std::cout << temp->idx << ", ";
 }
 
 int debugCb2(int i, FBNode<int>* c) {

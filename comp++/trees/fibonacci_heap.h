@@ -118,7 +118,7 @@ public:
 		return z;
 	}
 	void decrease_key(node* x, T k) {
-		assert((k < x->key) && "New key is greater than current\n");
+		assert((k <= x->key) && "New key is greater than current\n");
 		x->key = k;
 		node* y = x->p;
 		if ((y!=0) && (y->key > x->key)){

@@ -99,10 +99,10 @@ public:
 	friend std::vector<GEdge> Prim(Graph);
 	std::vector<node*> node_list;
 	std::vector<edge> edge_list;
+	std::vector<std::vector<GEdge>> Adj; // adjacency list
 protected:
 	int En; // num edges
 	int Vn; // num vertices
-	std::vector<std::vector<GEdge>> Adj; // adjacency list
 
 	void build(std::vector<std::vector<int>>& m) {
 		int n_rows = m.size();

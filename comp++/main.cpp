@@ -297,25 +297,37 @@ void testShortestPath() {
 	std::cout << "--- Single Source Shortest Path \n";
 	typedef Graph::node node;
 	typedef Graph::edge edge;
-	Graph graph(5);
-	graph.addEdgeDir(0, 1, 6);
-	graph.addEdgeDir(0, 4, 7);
-	graph.addEdgeDir(1, 2, 5);
-	graph.addEdgeDir(1, 3, -4);
-	graph.addEdgeDir(1, 4, 8);
-	graph.addEdgeDir(2, 1, 8);
-	graph.addEdgeDir(3, 2, 7);
-	graph.addEdgeDir(3, 0, 2);
-	graph.addEdgeDir(4, 2, -3);
-	graph.addEdgeDir(4, 3, 9);
+	Graph graph(9);
+	graph.addEdgeUndir(0, 1, 4);
+	graph.addEdgeUndir(1, 2, 8);
+	graph.addEdgeUndir(2, 3, 7);
+	graph.addEdgeUndir(3, 4, 9);
+	graph.addEdgeUndir(4, 5, 10);
+	graph.addEdgeUndir(5, 6, 2);
+	graph.addEdgeUndir(6, 7, 1);
+	graph.addEdgeUndir(7, 8, 7);
+
+	graph.addEdgeUndir(0, 7, 8);
+	graph.addEdgeUndir(1, 7, 11);
+	graph.addEdgeUndir(6, 8, 6);
+	graph.addEdgeUndir(8, 2, 2);
+	graph.addEdgeUndir(2, 5, 4);
+	graph.addEdgeUndir(3, 5, 14);
 
 	std::vector<GNode*> res;
-	int bad = Bellman_Ford(graph, graph.node_list[3], graph.node_list[1], res);
-	std::cout << "Path from " << graph.node_list[3]->idx << " to " << graph.node_list[1]->idx << " : ";
+	std::cout << "- Path from " << graph.node_list[3]->idx << " to " << graph.node_list[4]->idx << "\n";
+	std::cout << "Bellman-Ford: ";
+	int bad = Bellman_Ford(graph, graph.node_list[3], graph.node_list[4], res);
 	for (auto node : res) {
 		std::cout << node->idx << ", ";
 	}
-	std::cout << "\n\n";
+	std::cout << "\n";
+	std::cout << "Dijkstra: ";
+	std::vector<GNode*> res2 = Dijkstra(graph, graph.node_list[3], graph.node_list[4]);
+	for (auto node : res2) {
+		std::cout << node->idx << ", ";
+	}
+	std::cout << "\n";
 }
 
 int main()

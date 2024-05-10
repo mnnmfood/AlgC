@@ -82,7 +82,7 @@ public:
 	}
 	
 	// Remove y from root list and make it a child of x
-	void link(node* y, node* x) {
+	void link(node* y, node* x){
 		y->remove();
 		y->insert_left(x->c);
 		if (x->c == 0) {
@@ -145,8 +145,8 @@ public:
 	void inorder(node* p, void (*fun)(int, node*)) {
 		node* c = p->c;
 		for (int i{ 0 }; i < p->deg; i++) {
-			inorder(c, fun);
 			fun(i, c);
+			inorder(c, fun);
 			c = c->right;
 		}
 	}
@@ -205,7 +205,10 @@ private:
 
 	void cut(node* x, node* y) {
 		x->remove(); // remove it from y child list
-		if (y->c == x) y->c = x->left;
+		if (y->c == x) { // if its reference to child list, change reference
+			if (y->deg > 1) y->c = x->left;
+			else y->c = 0;
+		}
 		y->deg--;
 		x->insert_left(min); // add it to root list
 		deg++;

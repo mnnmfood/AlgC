@@ -316,14 +316,14 @@ void testShortestPath() {
 
 	std::vector<GNode*> res;
 	std::cout << "- Path from " << graph.node_list[3]->idx << " to " << graph.node_list[4]->idx << "\n";
+	int bad = Bellman_Ford(graph, graph.node_list[0], graph.node_list[4], res);
 	std::cout << "Bellman-Ford: ";
-	int bad = Bellman_Ford(graph, graph.node_list[3], graph.node_list[4], res);
 	for (auto node : res) {
 		std::cout << node->idx << ", ";
 	}
 	std::cout << "\n";
+	std::vector<GNode*> res2 = Dijkstra(graph, graph.node_list[0], graph.node_list[4]);
 	std::cout << "Dijkstra: ";
-	std::vector<GNode*> res2 = Dijkstra(graph, graph.node_list[3], graph.node_list[4]);
 	for (auto node : res2) {
 		std::cout << node->idx << ", ";
 	}

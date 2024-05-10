@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/IOTAVI009/source/repos/AlgC
+# Install script for directory: E:/repos/AlgC
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Users/IOTAVI009/Source/Repos/AlgC/out/install/x64-debug")
+  set(CMAKE_INSTALL_PREFIX "E:/repos/AlgC/out/install/x64-debug")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -34,7 +34,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("C:/Users/IOTAVI009/source/repos/AlgC/out/build/x64-debug/comp++/cmake_install.cmake")
+  include("E:/repos/AlgC/out/build/x64-debug/comp++/cmake_install.cmake")
 
 endif()
 
@@ -46,5 +46,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/IOTAVI009/source/repos/AlgC/out/build/x64-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "E:/repos/AlgC/out/build/x64-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -65,22 +65,16 @@ std::vector<GNode*> Dijkstra(Graph G, GNode* s, GNode* d) {
 		isinQ.push_back(1);
 	}
 	q.decrease_key(s, 0);
-	q.inorder(debugCb);
 	std::cout << "\n\n";
 	while (!q.isEmpty()) {
 		GNode* u = static_cast<GNode*>(q.extract_min());
 		isinQ[u->idx] = 0;
 		std::vector<GEdge>& adj_list = G.Adj[u->idx];
-		std::cout << "Investingating vertex: " << u->idx << "\n";
 		for (int i{ 0 }; i < adj_list.size(); i++) {
 			GNode* v = adj_list[i].v;
 			if (isinQ[v->idx]) {
-				std::cout << "Neighbor: " << v->idx;
 				relax(u, v, adj_list[i].w);
-				std::cout << " w0=" << v->key << " w1=" << v->d << "\n";
 				q.decrease_key(v, v->d);
-				q.inorder(debugCb);
-				std::cout << "\n\n";
 			}
 		}
 	}

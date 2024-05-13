@@ -8,7 +8,7 @@
 
 const inline int MAX_INT = std::numeric_limits<int>::max();
 
-void initalize_single(Graph G, GNode* s) {
+void initalize_single(Graph& G, GNode* s) {
 	for (auto node : G.node_list) {
 		node->d = MAX_INT;
 		node->pi = -1;
@@ -24,7 +24,7 @@ void relax(GNode* u, GNode* v, int w) {
 	}
 }
 
-int Bellman_Ford(Graph G, GNode* s, GNode* d, std::vector<GNode*>& res){
+int Bellman_Ford(Graph& G, GNode* s, GNode* d, std::vector<GNode*>& res){
 	initalize_single(G, s);
 	for (int i{ 0 }; i < G.node_list.size(); i++) {
 		for (GEdge& edge : G.edge_list) {
@@ -54,7 +54,7 @@ int Bellman_Ford(Graph G, GNode* s, GNode* d, std::vector<GNode*>& res){
 	return 1;
 }
 
-std::vector<GNode*> Dijkstra(Graph G, GNode* s, GNode* d) {
+std::vector<GNode*> Dijkstra(Graph& G, GNode* s, GNode* d) {
 	initalize_single(G, s);
 	FibHeap<int> q;
 	std::vector<int> isinQ;

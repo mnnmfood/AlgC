@@ -6,6 +6,7 @@
 #include "stacks_queues/queue.h"
 #include "sets/DisjForest.h"
 #include "trees/fibonacci_heap.h"
+#include "graphs/matrices.h"
 
 enum GColor
 {
@@ -38,13 +39,15 @@ public:
 	typedef GNode node;
 	typedef GEdge edge;
 
-	Graph(int vn) : Vn{ vn } { 
+	Graph(int vn) : Vn{ vn }, W{ vn } {
 		for (int i{ 0 }; i < vn; i++) {
 			node_list.push_back(new node(i));
 		}
 		Adj.resize(Vn); 
 	}
-	Graph(std::vector<std::vector<int>>& adj_m) { // from adj matrix
+	Graph(std::vector<std::vector<int>>& adj_m) :W(adj_m.size())
+	{ // from adj matrix
+		W = SqMatrix(adj_m.size());
 		if (check_square(adj_m)) build(adj_m);
 		else if (check_triang(adj_m)) build_sparse(adj_m);
 		else throw std::exception("Incorrect adjacency matrix\n");
@@ -57,6 +60,7 @@ public:
 		Adj[v].push_back(edge2);
 		edge_list.push_back(edge);
 		edge_list.push_back(edge2);
+		W(u, v) = W(v, u) = w;
 	}
 
 	void addEdgeDir(int u, int v, int w=0) {
@@ -64,6 +68,7 @@ public:
 		GEdge edge(node_list[u], node_list[v], w);
 		Adj[u].push_back(edge);
 		edge_list.push_back(edge);
+		W(u, v) = w;
 	}
 
 	std::vector<GNode*> breadth_first(int si, int di) {
@@ -95,11 +100,12 @@ public:
 		return res;
 	}
 
-	friend std::vector<GEdge> Kruskal(Graph);
-	friend std::vector<GEdge> Prim(Graph);
+	friend std::vector<GEdge> Kruskal(Graph&);
+	friend std::vector<GEdge> Prim(Graph&);
 	std::vector<node*> node_list;
 	std::vector<edge> edge_list;
 	std::vector<std::vector<GEdge>> Adj; // adjacency list
+	SqMatrix W;
 protected:
 	int En; // num edges
 	int Vn; // num vertices
@@ -115,6 +121,7 @@ protected:
 					Adj[i].push_back(edge);
 					Adj[k].push_back(edge);
 					edge_list.push_back(edge);
+					W(i, k) = m[i][k];
 				}
 			}
 		}
@@ -130,6 +137,7 @@ protected:
 					Adj[i].push_back(edge);
 					Adj[k].push_back(edge);
 					edge_list.push_back(edge);
+					W(i, k) = m[i][k];
 				}
 			}
 		}

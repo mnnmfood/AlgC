@@ -6,7 +6,7 @@
 #include<sets/DisjForest.h>
 #include "trees/fibonacci_heap.h"
 
-std::vector<GEdge> Kruskal(Graph G) {
+std::vector<GEdge> Kruskal(Graph& G) {
 	std::vector<GEdge> A;
 	std::vector<GEdge> edges = G.edge_list;
 	std::vector<GNode*> nodes = G.node_list;
@@ -34,7 +34,7 @@ int debugCb2(int i, FBNode<int>* c) {
 	return static_cast<GNode*>(c)->idx;
 }
 
-std::vector<GEdge> Prim(Graph G) {
+std::vector<GEdge> Prim(Graph& G) {
 	FibHeap<int> Q;
 	std::vector<GNode*> nodes = G.node_list;
 	std::vector<int> isinQ;

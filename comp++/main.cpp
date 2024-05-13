@@ -12,7 +12,8 @@
 #include "graphs/Graph.h"
 #include "sets/DisjForest.h"
 #include "graphs/MST.h"
-#include "graphs/shortest_path.h"
+#include "graphs/single_shortest.h"
+#include "graphs/pairs_shortest.h"
 
 inline std::random_device rd{};
 inline std::mt19937 gen{rd()};

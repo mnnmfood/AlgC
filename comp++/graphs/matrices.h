@@ -29,6 +29,10 @@ public:
 
 	int rows() const { return m_rows; }
 	
+	void setConstant(int c) {
+		memset (data, m_rows * m_rows * sizeof(int), c);
+	}
+
 	SqMatrix& operator=(const SqMatrix&& A) {
 		return operator=(A);
 	}

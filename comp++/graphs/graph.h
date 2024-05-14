@@ -19,10 +19,7 @@ enum GColor
 
 struct GNode: public DisjNode<int>, public FBNode<int>
 {
-	int idx;
-	int color;
-	int pi;
-	int d;
+	int idx, color, pi, d;
 	GNode(int i) : idx{ i }, color{ white }, 
 		pi{ -1 }, d{ std::numeric_limits<int>::max() } {}
 	void update(int c) { color = c; }
@@ -32,7 +29,11 @@ struct GEdge
 {
 	GNode* u, * v;
 	int w;
-	GEdge(GNode* u_, GNode* v_, int weight) : u{ u_ }, v{ v_ }, w{ weight } {}
+	int c, flow; // capacity and flow -used for maximum flow algorithms
+	GEdge(GNode* u_, GNode* v_, int weight) : u{ u_ }, v{ v_ }, w{ weight }, 
+		c{ -1 }, flow{ -1 } {}
+	GEdge(GNode* u_, GNode* v_, int weight, int _c, int _f) : u{ u_ }, v{ v_ }, 
+		w{ weight }, c{ _c }, flow{ _f }{}
 };
 
 class Graph
@@ -57,10 +58,10 @@ public:
 		else if (check_triang(adj_m)) build_sparse(adj_m);
 		else throw std::exception("Incorrect adjacency matrix\n");
 	}
-	void addEdgeUndir(int u, int v, int w=0) {
+	void addEdgeUndir(int u, int v, int w=0, int c=0, int f=0) {
 		assert((u < Vn) && "Index exceeded graph size\n");
-		GEdge edge(node_list[u], node_list[v], w);
-		GEdge edge2(node_list[v], node_list[u], w);
+		GEdge edge(node_list[u], node_list[v], w, c, f);
+		GEdge edge2(node_list[v], node_list[u], w, c, f);
 		Adj[u].push_back(edge);
 		Adj[v].push_back(edge2);
 		edge_list.push_back(edge);
@@ -68,9 +69,9 @@ public:
 		W(u, v) = W(v, u) = w;
 	}
 
-	void addEdgeDir(int u, int v, int w=0) {
+	void addEdgeDir(int u, int v, int w=0, int c=0, int f=0) {
 		assert((u < Vn) && "Index exceeded graph size\n");
-		GEdge edge(node_list[u], node_list[v], w);
+		GEdge edge(node_list[u], node_list[v], w, c, f);
 		Adj[u].push_back(edge);
 		edge_list.push_back(edge);
 		W(u, v) = w;
@@ -103,6 +104,16 @@ public:
 		}
 		res.push_back(d);
 		return res;
+	}
+	
+	int isEdge(int u, int v) {
+		return static_cast<int>(W(u, v) < MAX_INT);
+	}
+
+	void reset() {
+		edge_list.resize(0);
+		En = 0;
+		W.setConstant(0);
 	}
 
 	friend std::vector<GEdge> Kruskal(Graph&);

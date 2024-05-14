@@ -6,7 +6,7 @@
 #include "sets/DisjForest.h"
 #include "trees/fibonacci_heap.h"
 
-const inline int MAX_INT = std::numeric_limits<int>::max();
+//const inline int MAX_INT = std::numeric_limits<int>::max();
 
 void initalize_single(Graph& G, GNode* s) {
 	for (auto node : G.node_list) {

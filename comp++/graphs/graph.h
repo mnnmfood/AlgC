@@ -8,6 +8,8 @@
 #include "trees/fibonacci_heap.h"
 #include "graphs/matrices.h"
 
+inline const int MAX_INT = std::numeric_limits<int>::max();
+
 enum GColor
 {
 	white,
@@ -44,10 +46,13 @@ public:
 			node_list.push_back(new node(i));
 		}
 		Adj.resize(Vn); 
+		initializeW(Vn);
 	}
-	Graph(std::vector<std::vector<int>>& adj_m) :W(adj_m.size())
+
+	Graph(std::vector<std::vector<int>>& adj_m) 
+		:Vn{ static_cast<int>(adj_m.size()) }, W(adj_m.size())
 	{ // from adj matrix
-		W = SqMatrix(adj_m.size());
+		initializeW(Vn);
 		if (check_square(adj_m)) build(adj_m);
 		else if (check_triang(adj_m)) build_sparse(adj_m);
 		else throw std::exception("Incorrect adjacency matrix\n");
@@ -106,10 +111,9 @@ public:
 	std::vector<edge> edge_list;
 	std::vector<std::vector<GEdge>> Adj; // adjacency list
 	SqMatrix W;
-protected:
 	int En; // num edges
 	int Vn; // num vertices
-
+protected:
 	void build(std::vector<std::vector<int>>& m) {
 		int n_rows = m.size();
 		for (int i{ 0 }; i < n_rows; i++) {
@@ -158,6 +162,15 @@ protected:
 			if (row.size() != (n_rows-i)) return 0;
 		}
 		return 1;
+	}
+
+	void initializeW(int rows) {
+		for (int i{ 0 }; i < rows; i++) {
+			for (int j{ 0 }; j < rows; j++) {
+				if (i == j) W(i, j) = 0;
+				else W(i, j) = MAX_INT;
+			}
+		}
 	}
 };
 

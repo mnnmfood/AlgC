@@ -294,7 +294,7 @@ void testMST() {
 	std::cout << "\n\n";
 }
 
-void testShortestPath() {
+void testSingleShortest() {
 	std::cout << "--- Single Source Shortest Path \n";
 	typedef Graph::node node;
 	typedef Graph::edge edge;
@@ -316,7 +316,7 @@ void testShortestPath() {
 	graph.addEdgeUndir(3, 5, 14);
 
 	std::vector<GNode*> res;
-	std::cout << "- Path from " << graph.node_list[3]->idx << " to " << graph.node_list[4]->idx << "\n";
+	std::cout << "- Path from " << graph.node_list[0]->idx << " to " << graph.node_list[4]->idx << "\n";
 	int bad = Bellman_Ford(graph, graph.node_list[0], graph.node_list[4], res);
 	std::cout << "Bellman-Ford: ";
 	for (auto node : res) {
@@ -328,7 +328,64 @@ void testShortestPath() {
 	for (auto node : res2) {
 		std::cout << node->idx << ", ";
 	}
-	std::cout << "\n";
+	std::cout << "\n\n";
+}
+
+void testPairShortest() {
+	std::cout << "--- All Pairs Shortest Path \n";
+	Graph graph(9);
+	graph.addEdgeUndir(0, 1, 4);
+	graph.addEdgeUndir(1, 2, 8);
+	graph.addEdgeUndir(2, 3, 7);
+	graph.addEdgeUndir(3, 4, 9);
+	graph.addEdgeUndir(4, 5, 10);
+	graph.addEdgeUndir(5, 6, 2);
+	graph.addEdgeUndir(6, 7, 1);
+	graph.addEdgeUndir(7, 8, 7);
+
+	graph.addEdgeUndir(0, 7, 8);
+	graph.addEdgeUndir(1, 7, 11);
+	graph.addEdgeUndir(6, 8, 6);
+	graph.addEdgeUndir(8, 2, 2);
+	graph.addEdgeUndir(2, 5, 4);
+	graph.addEdgeUndir(3, 5, 14);
+	
+	SqMatrix L(graph.Vn);
+	slow_all_pairs(graph.W, L);
+	std::cout << "Slow all pairs\n";
+	std::cout << "-Shortest Distance matrix: \n";
+	std::cout << L;
+	SqMatrix pi(graph.Vn);
+	Floyd_Warshall(graph.W, L, pi);
+	int n = pi.rows();
+	std::cout << "-Floyd Warshall\n";
+	std::cout << "Shortest Distance matrix: \n";
+	std::cout << L;
+	std::cout << "Predecessor matrix: \n";
+	std::cout << pi;
+	std::cout << "- Path from " << 0 << " to " << 4 << ": ";
+	std::cout << 4 << ", ";
+	int i = 4;
+	while (pi(0, i) != -1) {
+		std::cout << pi(0, i) << ", ";
+		i = pi(0, i);
+	}
+	std::cout << "\n\n";
+}
+
+void testTransitiveClosure() {
+	std::cout << "--- Transitive Closure \n";
+	Graph graph(4);
+	graph.addEdgeDir(1, 2, 8);
+	graph.addEdgeDir(1, 3, 8);
+	graph.addEdgeDir(2, 1, 7);
+	graph.addEdgeDir(3, 0, 7);
+	graph.addEdgeDir(3, 2, 7);
+
+	SqMatrix T(graph.Vn);
+	TransitiveClosure(graph, T);
+	std::cout << T;
+	std::cout << "\n\n";
 }
 
 int main()
@@ -344,5 +401,7 @@ int main()
 	testGraph();
 	testDisjForest();
 	testMST();
-	testShortestPath();
+	testSingleShortest();
+	testPairShortest();
+	testTransitiveClosure();
 }

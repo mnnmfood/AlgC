@@ -55,7 +55,7 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "comp++::@8ebddc0f0d656140574f",
-					"jsonFile" : "target-comp++-Debug-78bda993a89af756c1da.json",
+					"jsonFile" : "target-comp++-Debug-5a96468271c48a2fb107.json",
 					"name" : "comp++",
 					"projectIndex" : 0
 				}
@@ -65,12 +65,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/IOTAVI009/source/repos/AlgC/out/build/x64-debug",
-		"source" : "C:/Users/IOTAVI009/source/repos/AlgC"
+		"build" : "E:/repos/AlgC/out/build/x64-debug",
+		"source" : "E:/repos/AlgC"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 4
+		"minor" : 6
 	}
 }

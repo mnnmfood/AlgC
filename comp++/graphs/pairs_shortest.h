@@ -7,7 +7,7 @@
 #include "graphs/matrices.h"
 
 
-void extend_path(const SqMatrix& L, const SqMatrix& W, SqMatrix& L_p){
+void extend_path(const SqMatrix<int>& L, const SqMatrix<int>& W, SqMatrix<int>& L_p){
 	int rows = W.rows();
 	for (int i{ 0 }; i < rows; i++) {
 		for (int j{ 0 }; j < rows; j++) {
@@ -23,9 +23,9 @@ void extend_path(const SqMatrix& L, const SqMatrix& W, SqMatrix& L_p){
 	}
 }
  
-void slow_all_pairs(const SqMatrix& W, SqMatrix& L_p){
+void slow_all_pairs(const SqMatrix<int>& W, SqMatrix<int>& L_p){
 	int n = W.rows();
-	SqMatrix L(n); 
+	SqMatrix<int> L(n); 
 	L = W;
 	for (int i{ 0 }; i < n; i++) {
 		extend_path(L, W, L_p);
@@ -33,11 +33,11 @@ void slow_all_pairs(const SqMatrix& W, SqMatrix& L_p){
 	}
 }
 
-void Floyd_Warshall(const SqMatrix& W, SqMatrix& D_p, SqMatrix& pi_p) {
+void Floyd_Warshall(const SqMatrix<int>& W, SqMatrix<int>& D_p, SqMatrix<int>& pi_p) {
 	int n = W.rows();
-	SqMatrix D(n); // min distances L(m-1)
+	SqMatrix<int> D(n); // min distances L(m-1)
 	D = W;
-	SqMatrix pi(n);
+	SqMatrix<int> pi(n);
 	// initialize predecessor matrix
 	for (int i{ 0 }; i < n; i++) {
 		for (int j{ 0 }; j < n; j++) {
@@ -65,10 +65,10 @@ void Floyd_Warshall(const SqMatrix& W, SqMatrix& D_p, SqMatrix& pi_p) {
 	}
 }
 
-void TransitiveClosure(Graph& G, SqMatrix& T_p) {
+void TransitiveClosure(Graph& G, SqMatrix<int>& T_p) {
 	int n = G.Vn;
-	SqMatrix& W = G.W;
-	SqMatrix T(n);
+	SqMatrix<int>& W = G.W;
+	SqMatrix<int> T(n);
 	for (int i{ 0 }; i < n; i++) {
 		for (int j{ 0 }; j < n; j++) {
 			if ((i == j) || (W(i, j)<MAX_INT)){

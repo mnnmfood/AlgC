@@ -14,6 +14,7 @@
 #include "graphs/MST.h"
 #include "graphs/single_shortest.h"
 #include "graphs/pairs_shortest.h"
+#include "graphs/max_flow.h"
 
 inline std::random_device rd{};
 inline std::mt19937 gen{rd()};
@@ -350,12 +351,12 @@ void testPairShortest() {
 	graph.addEdgeUndir(2, 5, 4);
 	graph.addEdgeUndir(3, 5, 14);
 	
-	SqMatrix L(graph.Vn);
+	SqMatrix<int> L(graph.Vn);
 	slow_all_pairs(graph.W, L);
 	std::cout << "Slow all pairs\n";
 	std::cout << "-Shortest Distance matrix: \n";
 	std::cout << L;
-	SqMatrix pi(graph.Vn);
+	SqMatrix<int> pi(graph.Vn);
 	Floyd_Warshall(graph.W, L, pi);
 	int n = pi.rows();
 	std::cout << "-Floyd Warshall\n";
@@ -382,10 +383,23 @@ void testTransitiveClosure() {
 	graph.addEdgeDir(3, 0, 7);
 	graph.addEdgeDir(3, 2, 7);
 
-	SqMatrix T(graph.Vn);
+	SqMatrix<int> T(graph.Vn);
 	TransitiveClosure(graph, T);
 	std::cout << T;
 	std::cout << "\n\n";
+}
+
+void testMaxFlow() {
+	FGraph graph(6, 0, 3);
+	graph.addEdge(0, 1, 16);
+	graph.addEdge(0, 5, 13);
+	graph.addEdge(1, 2, 12);
+	graph.addEdge(2, 3, 20);
+	graph.addEdge(2, 5, 9);
+	graph.addEdge(4, 3, 4);
+	graph.addEdge(4, 2, 7);
+	graph.addEdge(5, 4, 14);
+	std::cout << graph.A;
 }
 
 int main()
@@ -404,4 +418,5 @@ int main()
 	testSingleShortest();
 	testPairShortest();
 	testTransitiveClosure();
+	testMaxFlow();
 }

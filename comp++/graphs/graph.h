@@ -29,11 +29,8 @@ struct GEdge
 {
 	GNode* u, * v;
 	int w;
-	int c, flow; // capacity and flow -used for maximum flow algorithms
-	GEdge(GNode* u_, GNode* v_, int weight) : u{ u_ }, v{ v_ }, w{ weight }, 
-		c{ -1 }, flow{ -1 } {}
-	GEdge(GNode* u_, GNode* v_, int weight, int _c, int _f) : u{ u_ }, v{ v_ }, 
-		w{ weight }, c{ _c }, flow{ _f }{}
+	GEdge(GNode* u_, GNode* v_, int weight) : u{ u_ }, v{ v_ }, w{ weight } {}
+	GEdge() : u{ nullptr }, v{ nullptr }, w{ 0 } {}
 };
 
 class Graph
@@ -58,10 +55,10 @@ public:
 		else if (check_triang(adj_m)) build_sparse(adj_m);
 		else throw std::exception("Incorrect adjacency matrix\n");
 	}
-	void addEdgeUndir(int u, int v, int w=0, int c=0, int f=0) {
+	void addEdgeUndir(int u, int v, int w=0) {
 		assert((u < Vn) && "Index exceeded graph size\n");
-		GEdge edge(node_list[u], node_list[v], w, c, f);
-		GEdge edge2(node_list[v], node_list[u], w, c, f);
+		GEdge edge(node_list[u], node_list[v], w);
+		GEdge edge2(node_list[v], node_list[u], w);
 		Adj[u].push_back(edge);
 		Adj[v].push_back(edge2);
 		edge_list.push_back(edge);
@@ -69,9 +66,9 @@ public:
 		W(u, v) = W(v, u) = w;
 	}
 
-	void addEdgeDir(int u, int v, int w=0, int c=0, int f=0) {
+	void addEdgeDir(int u, int v, int w=0) {
 		assert((u < Vn) && "Index exceeded graph size\n");
-		GEdge edge(node_list[u], node_list[v], w, c, f);
+		GEdge edge(node_list[u], node_list[v], w);
 		Adj[u].push_back(edge);
 		edge_list.push_back(edge);
 		W(u, v) = w;
@@ -121,7 +118,7 @@ public:
 	std::vector<node*> node_list;
 	std::vector<edge> edge_list;
 	std::vector<std::vector<GEdge>> Adj; // adjacency list
-	SqMatrix W;
+	SqMatrix<int> W;
 	int En; // num edges
 	int Vn; // num vertices
 protected:

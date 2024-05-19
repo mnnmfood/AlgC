@@ -65,7 +65,6 @@ std::vector<GNode*> Dijkstra(Graph& G, GNode* s, GNode* d) {
 		isinQ.push_back(1);
 	}
 	q.decrease_key(s, 0);
-	std::cout << "\n\n";
 	while (!q.isEmpty()) {
 		GNode* u = static_cast<GNode*>(q.extract_min());
 		isinQ[u->idx] = 0;

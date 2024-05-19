@@ -6,7 +6,7 @@
 #include "trees/binary_tree.h"
 #include "trees/red_black_tree.h"
 #include "hash_table/hash_table.h"
-#include "Advanced DS/b_tree.h"
+#include "trees/b_tree.h"
 #include "trees/heaps.h"
 #include "trees/fibonacci_heap.h"
 #include "graphs/Graph.h"
@@ -229,7 +229,7 @@ std::vector<node*> path = graph.breadth_first(0, 5);
 }
 
 void testDisjForest() {
-	std::cout << "--- Disjunt Forest\n";
+	std::cout << "--- Disjoint Forest\n";
 	typedef DisjForest<int>::node node;
 	DisjForest<int> sets;
 	std::vector<node*> nodes;
@@ -353,8 +353,8 @@ void testPairShortest() {
 	
 	SqMatrix<int> L(graph.Vn);
 	slow_all_pairs(graph.W, L);
-	std::cout << "Slow all pairs\n";
-	std::cout << "-Shortest Distance matrix: \n";
+	std::cout << "-Slow all pairs\n";
+	std::cout << "Shortest Distance matrix: \n";
 	std::cout << L;
 	SqMatrix<int> pi(graph.Vn);
 	Floyd_Warshall(graph.W, L, pi);
@@ -386,10 +386,11 @@ void testTransitiveClosure() {
 	SqMatrix<int> T(graph.Vn);
 	TransitiveClosure(graph, T);
 	std::cout << T;
-	std::cout << "\n\n";
+	std::cout << "\n";
 }
 
 void testMaxFlow() {
+	std::cout << "--- Maximum Flow \n";
 	FGraph graph(6, 0, 3);
 	graph.addEdge(0, 1, 16);
 	graph.addEdge(0, 5, 13);
@@ -399,6 +400,12 @@ void testMaxFlow() {
 	graph.addEdge(4, 3, 4);
 	graph.addEdge(4, 2, 7);
 	graph.addEdge(5, 4, 14);
+	graph.addEdge(5, 1, 4);
+	std::cout << "- Ford Fulkerson algorith:\n";
+	graph.Ford_Fulkerson();
+	std::cout << graph.A;
+	std::cout << "- Relabel-to-Front \n";
+	graph.Relabel_to_front();
 	std::cout << graph.A;
 }
 

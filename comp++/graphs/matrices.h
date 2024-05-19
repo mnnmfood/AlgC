@@ -31,7 +31,7 @@ public:
 	int rows() const { return m_rows; }
 	
 	void setConstant(int c) {
-		memset (data, m_rows * m_rows * sizeof(T), c);
+		memset(data, c, m_rows * m_rows * sizeof(T));
 	}
 
 	SqMatrix<T>& operator=(const SqMatrix&& A) {

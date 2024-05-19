@@ -155,11 +155,6 @@
 		},
 		{
 			"backtrace" : 4,
-			"path" : "comp++/Advanced DS/b_tree.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 4,
 			"path" : "comp++/graphs/MST.h",
 			"sourceGroupIndex" : 1
 		},
@@ -221,6 +216,11 @@
 		{
 			"backtrace" : 4,
 			"path" : "comp++/timer.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 4,
+			"path" : "comp++/trees/b_tree.h",
 			"sourceGroupIndex" : 1
 		},
 		{

@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <random>
 #include <algorithm>
+#include "timer.h"
 #include "linked_list/linked_list.h"
 #include "stacks_queues/queue.h"
 #include "trees/binary_tree.h"
@@ -15,16 +16,45 @@
 #include "graphs/single_shortest.h"
 #include "graphs/pairs_shortest.h"
 #include "graphs/max_flow.h"
+#include "sort/sort.h"
 
 inline std::random_device rd{};
 inline std::mt19937 gen{rd()};
-std::uniform_int_distribution unif{ 1, 10 };
+std::uniform_int_distribution unif{ 1, 100};
 
 template<typename T>
 void fill(T* arr, int len) {
 	for (int i{ 0 }; i < len; i++) {
 		arr[i] = static_cast<T>(unif(gen));
 	}
+}
+
+
+void testSort() {
+	std::cout << "--- Sorting\n";
+	int size = 20;
+	std::vector<int> s(size);
+	fill(s.data(), size);
+	std::vector<int> s1 = s;
+	std::vector<int> s2 = s;
+	std::cout << "Original array: ";
+	for (auto i : s) std::cout << i << ", ";
+	
+	std::cout << "\n";
+	std::sort(s.begin(), s.end());
+	std::cout << "Sorted array: ";
+	for (auto i : s) std::cout << i << ", ";
+	std::cout << "\n";
+	
+	Quicksort(s1);
+	std::cout << "Quicksort: ";
+	for (auto i : s1) std::cout << i << ", ";
+	std::cout << "\n\n";
+
+	HeapSort(s1);
+	std::cout << "Quicksort: ";
+	for (auto i : s1) std::cout << i << ", ";
+	std::cout << "\n\n";
 }
 
 void testQueue() {
@@ -411,6 +441,7 @@ void testMaxFlow() {
 
 int main()
 {
+	testSort();
 	testLinkedList();
 	testQueue();
 	testHashTable();

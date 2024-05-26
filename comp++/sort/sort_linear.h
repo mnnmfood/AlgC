@@ -120,4 +120,55 @@ void BucketSort(std::vector<T>& A, std::list<T>& C) {
 	BucketSort(A.data(), A.size(), C);
 }
 
+// -Merge sort
+
+template<typename T>
+void Merge(T* A, int p, int q, int r) {
+	// from p to q
+	int n1 = q - p + 1;
+	T* L = new T[n1 + 1];
+	// from q to r
+	int n2 = r - q;
+	T* R = new T[n2 + 1];
+	
+	for (int i{ 0 }; i < n1; i++) {
+		L[i] = A[p + i];
+	}
+	for (int i{ 0 }; i < n2; i++) {
+		R[i] = A[q + i + 1];
+	}
+	L[n1] = std::numeric_limits<T>::max();
+	R[n2] = std::numeric_limits<T>::max();
+	
+	int i = 0, j = 0;
+	for (int k{ p }; k < r + 1; k++) {
+		if (L[i] <= R[j]) {
+			A[k] = L[i];
+			i++;
+		}
+		else {
+			A[k] = R[j];
+			j++;
+		}
+	}
+
+	delete L;
+	delete R;
+}
+
+template<typename T>
+void MergeSort(T* A, int p, int r) {
+	if (p < r) {
+		int q = (p + r) / 2;
+		MergeSort(A, p, q);
+		MergeSort(A, q + 1, r);
+		Merge(A, p, q, r);
+	}
+}
+
+template<typename T>
+void MergeSort(std::vector<T>& A) {
+	MergeSort(A.data(), 0, A.size() - 1);
+}
+
 #endif

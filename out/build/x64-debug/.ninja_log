@@ -1,3 +1,21 @@
 # ninja log v5
 15	1785	7384191604348127	comp++/CMakeFiles/comp++.dir/main.cpp.obj	b420e79e2834d095
 1786	2071	7384191606256341	comp++/comp++.exe	eb2f61b1d4d38d50
+2	1705	7384217585852760	comp++/CMakeFiles/comp++.dir/main.cpp.obj	b420e79e2834d095
+1706	2161	7384217588872178	comp++/comp++.exe	eb2f61b1d4d38d50
+13	1702	7384217959738165	comp++/CMakeFiles/comp++.dir/main.cpp.obj	b420e79e2834d095
+1703	2150	7384217963436856	comp++/comp++.exe	eb2f61b1d4d38d50
+3	1985	7384226907203699	comp++/CMakeFiles/comp++.dir/main.cpp.obj	b420e79e2834d095
+1986	2278	7384226909209496	comp++/comp++.exe	eb2f61b1d4d38d50
+13	1718	7384228562565770	comp++/CMakeFiles/comp++.dir/main.cpp.obj	b420e79e2834d095
+1719	1985	7384228564258403	comp++/comp++.exe	eb2f61b1d4d38d50
+13	1735	7384229753247347	comp++/CMakeFiles/comp++.dir/main.cpp.obj	b420e79e2834d095
+1735	2266	7384229756567943	comp++/comp++.exe	eb2f61b1d4d38d50
+2	1722	7384230917735860	comp++/CMakeFiles/comp++.dir/main.cpp.obj	b420e79e2834d095
+1723	2138	7384230920428184	comp++/comp++.exe	eb2f61b1d4d38d50
+14	1704	7384231588009915	comp++/CMakeFiles/comp++.dir/main.cpp.obj	b420e79e2834d095
+1704	2035	7384231590328004	comp++/comp++.exe	eb2f61b1d4d38d50
+3	1714	7384232189919495	comp++/CMakeFiles/comp++.dir/main.cpp.obj	b420e79e2834d095
+1715	2115	7384232192550272	comp++/comp++.exe	eb2f61b1d4d38d50
+4	1712	7384232601421387	comp++/CMakeFiles/comp++.dir/main.cpp.obj	b420e79e2834d095
+1713	2180	7384232604273377	comp++/comp++.exe	eb2f61b1d4d38d50

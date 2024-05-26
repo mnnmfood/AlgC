@@ -459,6 +459,7 @@ void testSortLinear() {
 	fill(test4.data(), size, 100);
 	for (auto& i : test4) i /= 100;
 	std::vector<float> test5 = test4;
+	std::vector<float> test6 = test4;
 
 	std::cout << "Original array: ";
 	for (auto i : test5) std::cout << i << ", ";
@@ -473,6 +474,12 @@ void testSortLinear() {
 	std::list<float> res3;
 	BucketSort(test5, res3);
 	for (auto i : res3) std::cout << i << ", ";
+	std::cout << "\n";
+
+	std::cout << "-Merge Sort: ";
+	std::vector<float> res4;
+	MergeSort(test6);
+	for (auto i : test6) std::cout << i << ", ";
 	std::cout << "\n";
 }
 

@@ -3,7 +3,7 @@
 #
 
 # Add source to this project's executable.
-add_executable (comp++ "main.cpp")
+add_executable (comp++ "main.cpp" "sort/sort_linear.h")
 
 FILE(GLOB_RECURSE SRC_LIST "${PROJECT_SOURCE_DIR}" "*.h")
 include(CMakePrintHelpers)

@@ -1,5 +1,0 @@
-C:/Users/IOTAVI009/source/repos/AlgC/out/build/x64-release/CMakeFiles/edit_cache.dir
-C:/Users/IOTAVI009/source/repos/AlgC/out/build/x64-release/CMakeFiles/rebuild_cache.dir
-C:/Users/IOTAVI009/source/repos/AlgC/out/build/x64-release/comp++/CMakeFiles/comp++.dir
-C:/Users/IOTAVI009/source/repos/AlgC/out/build/x64-release/comp++/CMakeFiles/edit_cache.dir
-C:/Users/IOTAVI009/source/repos/AlgC/out/build/x64-release/comp++/CMakeFiles/rebuild_cache.dir

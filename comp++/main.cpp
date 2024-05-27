@@ -16,14 +16,22 @@
 #include "graphs/single_shortest.h"
 #include "graphs/pairs_shortest.h"
 #include "graphs/max_flow.h"
+<<<<<<< HEAD
 #include "sort/sort.h"
 
 inline std::random_device rd{};
 inline std::mt19937 gen{rd()};
 std::uniform_int_distribution unif{ 1, 100};
+=======
+#include "sort/sort_linear.h"
+
+inline std::random_device rd{};
+inline std::mt19937 gen{rd()};
+>>>>>>> origin/linear_sort
 
 template<typename T>
-void fill(T* arr, int len) {
+void fill(T* arr, int len, int range) {
+	std::uniform_int_distribution unif{ 0, range };
 	for (int i{ 0 }; i < len; i++) {
 		arr[i] = static_cast<T>(unif(gen));
 	}
@@ -439,6 +447,79 @@ void testMaxFlow() {
 	std::cout << graph.A;
 }
 
+void testSortLinear() {
+	std::cout << "--- Sorting Linear Time\n";
+	int size = 10;
+	int range = 10;
+	std::vector<int> test(size);
+	fill(test.data(), size, range);
+	std::vector<int> test1 = test;
+
+	std::cout << "Original array: ";
+	for (auto i : test) std::cout << i << ", ";
+	std::cout << "\n";
+
+	std::cout << "Sorted array: ";
+	std::sort(test.begin(), test.end());
+	for (auto i : test) std::cout << i << ", ";
+	std::cout << "\n";
+
+	std::vector<int> res;
+	CountingSort(test1, range, res);
+	std::cout << "-Counting Sort: ";
+	for (auto i : res) std::cout << i << ", ";
+	std::cout << "\n\n";
+	
+	std::vector<uint32_t> test2(size);
+	range = std::numeric_limits<int>::max();
+	fill(test2.data(), size, range);
+	std::vector<uint32_t> test3 = test2;
+
+	std::cout << "Original array: ";
+	for (auto i : test2) std::cout << i << ", ";
+	std::cout << "\n";
+
+	std::cout << "Sorted array: ";
+	std::sort(test2.begin(), test2.end());
+	for (auto i : test2) std::cout << i << ", ";
+	std::cout << "\n";
+
+	int r = 8; 
+	std::vector<uint32_t> res2;
+	RadixSort(test3, r, res2);
+	std::cout << "-Radix Sort (r=8): ";
+	for (auto i : res2) std::cout << i << ", ";
+	std::cout << "\n\n";
+
+	size = 30;
+	std::vector<float> test4(size);
+	fill(test4.data(), size, 100);
+	for (auto& i : test4) i /= 100;
+	std::vector<float> test5 = test4;
+	std::vector<float> test6 = test4;
+
+	std::cout << "Original array: ";
+	for (auto i : test5) std::cout << i << ", ";
+	std::cout << "\n";
+
+	std::cout << "Sorted array: ";
+	std::sort(test4.begin(), test4.end());
+	for (auto i : test4) std::cout << i << ", ";
+	std::cout << "\n";
+
+	std::cout << "-Bucket Sort: ";
+	std::list<float> res3;
+	BucketSort(test5, res3);
+	for (auto i : res3) std::cout << i << ", ";
+	std::cout << "\n";
+
+	std::cout << "-Merge Sort: ";
+	std::vector<float> res4;
+	MergeSort(test6);
+	for (auto i : test6) std::cout << i << ", ";
+	std::cout << "\n";
+}
+
 int main()
 {
 	testSort();
@@ -457,4 +538,5 @@ int main()
 	testPairShortest();
 	testTransitiveClosure();
 	testMaxFlow();
+	testSortLinear();
 }
